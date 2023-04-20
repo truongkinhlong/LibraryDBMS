@@ -6,7 +6,7 @@ CREATE TABLE Branch (
   address VARCHAR(255) NOT NULL,
   openHour TIME NOT NULL,
   closeHour TIME NOT NULL,
-  openDay SET('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
+  openDay TEXT NOT NULL,
   PRIMARY KEY (branchID)
 );
 
@@ -62,6 +62,20 @@ CREATE TABLE Book (
   FOREIGN KEY (branchID) REFERENCES Branch(branchID)
 );
 
+CREATE TABLE Author (
+  authorID INT PRIMARY KEY AUTO_INCREMENT,
+  lName VARCHAR(255) NOT NULL,
+  fName VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE WrittenBy (
+  isbn VARCHAR(13) NOT NULL,
+  authorID INT NOT NULL,
+  PRIMARY KEY (isbn, authorID),
+  FOREIGN KEY (isbn) REFERENCES Book(isbn),
+  FOREIGN KEY (authorID) REFERENCES Author(authorID)
+);
+
 CREATE TABLE Request (
   requestID INT NOT NULL UNIQUE KEY AUTO_INCREMENT,
   memberID INT NOT NULL,
@@ -96,19 +110,5 @@ CREATE TABLE `Order` (
   accuredFine DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (orderID),
   FOREIGN KEY (requestID) REFERENCES Request(requestID)
-);
-
-CREATE TABLE Author (
-  authorID INT PRIMARY KEY AUTO_INCREMENT,
-  lName VARCHAR(255) NOT NULL,
-  fName VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE WrittenBy (
-  isbn VARCHAR(13) NOT NULL,
-  authorID INT NOT NULL,
-  PRIMARY KEY (isbn, authorID),
-  FOREIGN KEY (isbn) REFERENCES Book(isbn),
-  FOREIGN KEY (authorID) REFERENCES Author(authorID)
 );
 
